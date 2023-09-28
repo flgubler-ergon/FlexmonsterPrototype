@@ -1,0 +1,36 @@
+<h1 class="page-title">Custom Pivot Table Demo</h1>
+<h3>Konfigurator</h3>
+<div class="configurator">
+<select class="config-elem" [(ngModel)]="selectedRowCount" (change)="rowCountChanged()">
+    <option *ngFor="let rowCount of possibleRowCounts" [value]="rowCount" [selected]="selectedRowCount == rowCount">
+        {{rowCount}} Zeilen
+    </option>
+</select>
+<select class="config-elem" [(ngModel)]="selectedStrategy" (change)="strategyChanged()">
+    <option *ngFor="let strategy of dataLoadingStrategies" [value]="strategy" [selected]="selectedStrategy == strategy">
+        {{strategy}}
+    </option>
+</select>
+</div>
+
+<div>
+    <fm-pivot
+        #pivotTable
+        [report]="reportConfig"
+        [toolbar]="true"
+        [height]="800"
+        (beforetoolbarcreated)="customizeToolbar($event)"
+    />
+</div>
+
+<div class="description-blocks first-description-block">
+    <h3>Was getestet werden soll</h3>
+    <ul>
+        <li>JSON Als Datenquelle</li>
+        <li>Umgang mit grossen Datenmengen</li>
+        <li>CSP Kompatibilität</li>
+        <li>Localization / Sprachwechsel</li>
+        <li>UX Konfigurierbarkeit</li>
+        <li>Performance</li>
+    </ul>
+</div>
