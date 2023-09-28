@@ -80,6 +80,14 @@ export class CustomPivotTableDemoComponent implements OnInit {
         this.pivotTable.flexmonster.exportTo(this.selectedExportType)
     }
 
+    printData(): void {
+        this.pivotTable.flexmonster.print()
+    }
+
+    openConfigurator(): void {
+        this.pivotTable.flexmonster.openFieldsList()
+    }
+
     private initializeTable(): void {
         const jsonUrl = this.tableDataService.createRemoteJsonUrl(this.selectedRowCount)
         this.reportConfig = getDefaultReportConfig(jsonUrl)
