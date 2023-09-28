@@ -31,10 +31,6 @@ export class CustomPivotTableDemoComponent implements OnInit {
         this.initializeTable()
     }
 
-    customizeToolbar(toolbar: Flexmonster.Toolbar) {
-        toolbar.showShareReportTab = false;
-    }
-
     rowCountChanged(): void {
         console.log("Selected new row count", this.selectedRowCount)
         this.updateDataSource(this.selectedRowCount, this.selectedStrategy, this.previousStrategy)
@@ -44,6 +40,14 @@ export class CustomPivotTableDemoComponent implements OnInit {
         console.log("Selected new data loading strategy", this.selectedStrategy)
         this.updateDataSource(this.selectedRowCount, this.selectedStrategy, this.previousStrategy)
         this.previousStrategy = this.selectedStrategy
+    }
+
+    showChart(): void {
+        this.pivotTable.flexmonster.showCharts("column")
+    }
+
+    showTable(): void {
+        this.pivotTable.flexmonster.showGrid()
     }
 
     private initializeTable(): void {

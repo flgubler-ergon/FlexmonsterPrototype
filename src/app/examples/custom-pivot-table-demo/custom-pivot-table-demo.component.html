@@ -1,6 +1,7 @@
 <h1 class="page-title">Custom Pivot Table Demo</h1>
+
 <h3>Konfigurator</h3>
-<div class="configurator">
+<div class="data-configurator">
 <select class="config-elem" [(ngModel)]="selectedRowCount" (change)="rowCountChanged()">
     <option *ngFor="let rowCount of possibleRowCounts" [value]="rowCount" [selected]="selectedRowCount == rowCount">
         {{rowCount}} Zeilen
@@ -13,13 +14,18 @@
 </select>
 </div>
 
+<h3>Toolbox</h3>
+<div class="toolbox-bar">
+<button class="toolbox-elem" (click)="showTable()">Tabelle zeigen</button>
+<button class="toolbox-elem" (click)="showChart()">Charts zeigen</button>
+</div>
+
 <div>
     <fm-pivot
         #pivotTable
         [report]="reportConfig"
-        [toolbar]="true"
+        [toolbar]="false"
         [height]="800"
-        (beforetoolbarcreated)="customizeToolbar($event)"
     />
 </div>
 

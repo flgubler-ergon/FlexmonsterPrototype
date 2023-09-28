@@ -1,10 +1,20 @@
 
-.configurator {
+.data-configurator {
     display: flex;
     flex-direction: row;
     padding-bottom: 1rem;
 
     .config-elem {
+        margin-right: 1rem;
+    }
+}
+
+.toolbox-bar {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 1rem;
+
+    .toolbox-elem {
         margin-right: 1rem;
     }
 }
