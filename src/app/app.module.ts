@@ -14,9 +14,6 @@ import { CustomizingToolbarComponent } from './examples/customizing-toolbar/cust
 import { PivotTableDemoComponent } from './examples/pivot-table-demo/pivot-table-demo.component';
 import { UpdatingDataComponent } from './examples/updating-data/updating-data.component';
 import { UsingApiCallsComponent } from './examples/using-api-calls/using-api-calls.component';
-import { WithAmcharts4Component } from './examples/with-amcharts4/with-amcharts4.component';
-import { WithAmchartsComponent } from './examples/with-amcharts/with-amcharts.component';
-import { WithHighchartsComponent } from './examples/with-highcharts/with-highcharts.component';
 import { FormsModule } from '@angular/forms';
 import {CustomPivotTableDemoComponent} from './examples/custom-pivot-table-demo/custom-pivot-table-demo.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -33,9 +30,6 @@ import {HttpClientModule} from '@angular/common/http';
     UpdatingDataComponent,
     CustomizingToolbarComponent,
     CustomizingGridComponent,
-    WithHighchartsComponent,
-    WithAmcharts4Component,
-    WithAmchartsComponent,
     ToggleButtonComponent,
     ToggleSwitchComponent
   ],
