@@ -2,22 +2,28 @@
 
 <h3>Konfigurator</h3>
 <div class="data-configurator">
-<select class="config-elem" [(ngModel)]="selectedRowCount" (change)="rowCountChanged()">
-    <option *ngFor="let rowCount of possibleRowCounts" [value]="rowCount" [selected]="selectedRowCount == rowCount">
-        {{rowCount}} Zeilen
-    </option>
-</select>
-<select class="config-elem" [(ngModel)]="selectedStrategy" (change)="strategyChanged()">
-    <option *ngFor="let strategy of dataLoadingStrategies" [value]="strategy" [selected]="selectedStrategy == strategy">
-        {{strategy}}
-    </option>
-</select>
+    <select class="config-elem" [(ngModel)]="selectedRowCount" (change)="rowCountChanged()">
+        <option *ngFor="let rowCount of possibleRowCounts" [value]="rowCount" [selected]="selectedRowCount == rowCount">
+            {{rowCount}} Zeilen
+        </option>
+    </select>
+    <select class="config-elem" [(ngModel)]="selectedStrategy" (change)="strategyChanged()">
+        <option *ngFor="let strategy of dataLoadingStrategies" [value]="strategy" [selected]="selectedStrategy == strategy">
+            {{strategy}}
+        </option>
+    </select>
 </div>
 
 <h3>Toolbox</h3>
 <div class="toolbox-bar">
-<button class="toolbox-elem" (click)="showTable()">Tabelle zeigen</button>
-<button class="toolbox-elem" (click)="showChart()">Charts zeigen</button>
+    <button class="toolbox-elem" (click)="showTable()">Tabelle zeigen</button>
+
+    <select class="toolbox-elem" [(ngModel)]="selectedChartType" (change)="chartTypeChanged()">
+        <option *ngFor="let chartType of possibleChartTypes" [value]="chartType" [selected]="selectedChartType == chartType">
+            {{chartType}} chart
+        </option>
+    </select>
+    <button class="toolbox-elem" (click)="showChart()">Charts zeigen</button>
 </div>
 
 <div>

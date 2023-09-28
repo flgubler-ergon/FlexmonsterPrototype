@@ -6,6 +6,7 @@ import {TableDataService} from '../../services/table-data.service';
 import {FlexmonsterPivot} from 'ngx-flexmonster';
 import {DataSource} from 'flexmonster';
 import {DataLoadingStrategy} from '../../model/DataLoadingStrategy';
+import {ChartType} from '../../model/ChartType';
 
 @Component({
     selector: 'app-custom-pivot-table-demo',
@@ -19,9 +20,14 @@ export class CustomPivotTableDemoComponent implements OnInit {
     selectedRowCount: RowCount = 1500
     selectedStrategy: DataLoadingStrategy = DataLoadingStrategy.LOAD_IN_FLEXMONSTER
     previousStrategy: DataLoadingStrategy = this.selectedStrategy
+    selectedChartType: ChartType = 'column'
 
     readonly possibleRowCounts: RowCount[] = [150, 1500, 15000, 150000]
     readonly dataLoadingStrategies: DataLoadingStrategy[] = values(DataLoadingStrategy)
+    readonly possibleChartTypes: ChartType[] = ['column', 'bar_h', 'line', 'pie', 'scatter', 'column_line', 'stacked_column']
+
+    private isShowingGrid: Boolean = true
+    private isShowingChart: Boolean = false
 
     constructor(
         private readonly tableDataService: TableDataService
@@ -42,12 +48,23 @@ export class CustomPivotTableDemoComponent implements OnInit {
         this.previousStrategy = this.selectedStrategy
     }
 
+    chartTypeChanged(): void {
+        console.log("Selected new chart-type", this.selectedChartType)
+        if (this.isShowingChart) {
+            this.showChart() // change chart-type
+        }
+    }
+
     showChart(): void {
-        this.pivotTable.flexmonster.showCharts("column")
+        this.pivotTable.flexmonster.showCharts(this.selectedChartType)
+        this.isShowingChart = true
+        this.isShowingGrid = false
     }
 
     showTable(): void {
         this.pivotTable.flexmonster.showGrid()
+        this.isShowingChart = false
+        this.isShowingGrid = true
     }
 
     private initializeTable(): void {
