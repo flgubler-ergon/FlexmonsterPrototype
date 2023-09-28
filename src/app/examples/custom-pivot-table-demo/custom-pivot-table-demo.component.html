@@ -24,7 +24,15 @@
         </option>
     </select>
     <button class="toolbox-elem" (click)="showChart()">Charts Zeigen</button>
+
     <button class="toolbox-elem" (click)="saveReportConfig()">Config exportieren</button>
+
+    <select class="toolbox-elem" [(ngModel)]="selectedExportType">
+        <option *ngFor="let exportType of possibleExportTypes" [value]="exportType" [selected]="selectedChartType == exportType">
+            {{exportType}}
+        </option>
+    </select>
+    <button class="toolbox-elem" (click)="exportData()">Daten exportieren</button>
 </div>
 
 <div>

@@ -7,6 +7,7 @@ import {FlexmonsterPivot} from 'ngx-flexmonster';
 import {DataSource} from 'flexmonster';
 import {DataLoadingStrategy} from '../../model/DataLoadingStrategy';
 import {ChartType} from '../../model/ChartType';
+import {ExportType} from '../../model/ExportType';
 
 @Component({
     selector: 'app-custom-pivot-table-demo',
@@ -21,10 +22,12 @@ export class CustomPivotTableDemoComponent implements OnInit {
     selectedStrategy: DataLoadingStrategy = DataLoadingStrategy.LOAD_IN_FLEXMONSTER
     previousStrategy: DataLoadingStrategy = this.selectedStrategy
     selectedChartType: ChartType = 'column'
+    selectedExportType: ExportType = 'excel'
 
     readonly possibleRowCounts: RowCount[] = [150, 1500, 15000, 150000]
     readonly dataLoadingStrategies: DataLoadingStrategy[] = values(DataLoadingStrategy)
     readonly possibleChartTypes: ChartType[] = ['column', 'bar_h', 'line', 'pie', 'scatter', 'column_line', 'stacked_column']
+    readonly possibleExportTypes: ExportType[] = ['csv', 'html', 'pdf', 'image', 'excel']
 
     private isShowingGrid: Boolean = true
     private isShowingChart: Boolean = false
@@ -71,6 +74,10 @@ export class CustomPivotTableDemoComponent implements OnInit {
         this.pivotTable.flexmonster.save({
             filename: "ReportConfig.json"
         })
+    }
+
+    exportData(): void {
+        this.pivotTable.flexmonster.exportTo(this.selectedExportType)
     }
 
     private initializeTable(): void {
