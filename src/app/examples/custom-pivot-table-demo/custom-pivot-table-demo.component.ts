@@ -24,6 +24,8 @@ export class CustomPivotTableDemoComponent implements OnInit {
     selectedChartType: ChartType = 'column'
     selectedExportType: ExportType = 'excel'
 
+    useDefaultToolbar: Boolean = false
+
     readonly possibleRowCounts: RowCount[] = [150, 1500, 15000, 150000]
     readonly dataLoadingStrategies: DataLoadingStrategy[] = values(DataLoadingStrategy)
     readonly possibleChartTypes: ChartType[] = ['column', 'bar_h', 'line', 'pie', 'scatter', 'column_line', 'stacked_column']
@@ -89,7 +91,14 @@ export class CustomPivotTableDemoComponent implements OnInit {
     }
 
     openCellFormattingDialog(): void {
-        // TODO implement: cannot because that is part of the toolbar...
+        if (this.useDefaultToolbar) {
+            this.pivotTable.flexmonster.toolbar.formatCellsHandler()
+        } else {
+            console.log("Cannot open cell-formatting without toolbar")
+            alert("Diese Funktionalität funktioniert nur über die \"offizielle\" Toolbar")
+        }
+        // this.pivotTable.flexmonster.toolbar.conditionalFormattingHandler()
+        // this.pivotTable.flexmonster.toolbar.optionsHandler()
     }
 
     private initializeTable(): void {

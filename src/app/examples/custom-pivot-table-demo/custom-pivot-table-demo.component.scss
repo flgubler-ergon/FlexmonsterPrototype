@@ -21,6 +21,25 @@
     }
 }
 
+.hidden-toolbar-switch {
+    align-content: baseline;
+    align-items: center;
+}
+
+.hide-toolbar {
+    ::ng-deep #fm-toolbar-wrapper {
+        display: none;
+    }
+
+    ::ng-deep #fm-list-wrapper {
+        display: none;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
 ul {
     margin: 20px;
     padding: 0;

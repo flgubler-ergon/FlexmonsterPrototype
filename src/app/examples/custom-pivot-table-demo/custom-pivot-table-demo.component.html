@@ -15,7 +15,11 @@
 </div>
 
 <h3>Toolbox</h3>
-<div class="toolbox-bar">
+<div class="toolbox-bar hidden-toolbar-switch">
+    <input type="checkbox" id="hiddenToolbarCheckbox" [(ngModel)]="useDefaultToolbar">
+    <label for="hiddenToolbarCheckbox">Standard-Toolbar nutzen</label>
+</div>
+<div class="toolbox-bar" *ngIf="!useDefaultToolbar">
     <button class="toolbox-elem" (click)="showTable()">Tabelle zeigen</button>
 
     <select class="toolbox-elem" [(ngModel)]="selectedChartType" (change)="chartTypeChanged()">
@@ -36,14 +40,16 @@
 
     <button class="toolbox-elem" (click)="printData()">Daten drucken</button>
     <button class="toolbox-elem" (click)="openConfigurator()">Konfigurator öffnen</button>
+
     <button class="toolbox-elem" (click)="openCellFormattingDialog()">Cell-Formatting öffnen</button>
 </div>
 
 <div>
     <fm-pivot
         #pivotTable
+        [class.hide-toolbar]="!useDefaultToolbar"
         [report]="reportConfig"
-        [toolbar]="false"
+        [toolbar]="true"
         [height]="800"
     />
 </div>
