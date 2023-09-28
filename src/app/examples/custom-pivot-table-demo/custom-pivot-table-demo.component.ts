@@ -88,6 +88,10 @@ export class CustomPivotTableDemoComponent implements OnInit {
         this.pivotTable.flexmonster.openFieldsList()
     }
 
+    openCellFormattingDialog(): void {
+        // TODO implement: cannot because that is part of the toolbar...
+    }
+
     private initializeTable(): void {
         const jsonUrl = this.tableDataService.createRemoteJsonUrl(this.selectedRowCount)
         this.reportConfig = getDefaultReportConfig(jsonUrl)
