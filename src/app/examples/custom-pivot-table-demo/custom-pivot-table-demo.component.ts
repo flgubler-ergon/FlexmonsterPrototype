@@ -67,6 +67,12 @@ export class CustomPivotTableDemoComponent implements OnInit {
         this.isShowingGrid = true
     }
 
+    saveReportConfig(): void {
+        this.pivotTable.flexmonster.save({
+            filename: "ReportConfig.json"
+        })
+    }
+
     private initializeTable(): void {
         const jsonUrl = this.tableDataService.createRemoteJsonUrl(this.selectedRowCount)
         this.reportConfig = getDefaultReportConfig(jsonUrl)
