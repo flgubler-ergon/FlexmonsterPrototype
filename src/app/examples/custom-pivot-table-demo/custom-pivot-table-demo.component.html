@@ -50,6 +50,7 @@
         [class.hide-toolbar]="!useDefaultToolbar"
         [report]="reportConfig"
         [toolbar]="true"
+        (beforetoolbarcreated)="customizeToolbar($event)"
         [height]="800"
     />
 </div>

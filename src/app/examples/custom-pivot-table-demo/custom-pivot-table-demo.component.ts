@@ -8,6 +8,7 @@ import {DataSource} from 'flexmonster';
 import {DataLoadingStrategy} from '../../model/DataLoadingStrategy';
 import {ChartType} from '../../model/ChartType';
 import {ExportType} from '../../model/ExportType';
+import {ToolbarTabId} from '../../model/ToolbarTabId';
 
 @Component({
     selector: 'app-custom-pivot-table-demo',
@@ -30,6 +31,12 @@ export class CustomPivotTableDemoComponent implements OnInit {
     readonly dataLoadingStrategies: DataLoadingStrategy[] = values(DataLoadingStrategy)
     readonly possibleChartTypes: ChartType[] = ['column', 'bar_h', 'line', 'pie', 'scatter', 'column_line', 'stacked_column']
     readonly possibleExportTypes: ExportType[] = ['csv', 'html', 'pdf', 'image', 'excel']
+
+    private readonly hiddenTabsIds: string[] = [
+        ToolbarTabId.CONNECT_DATA_SOURCE,
+        ToolbarTabId.OPEN_REPORT,
+        ToolbarTabId.SHARE_LINK,
+    ].map(tab => tab.valueOf())
 
     private isShowingGrid: Boolean = true
     private isShowingChart: Boolean = false
@@ -91,14 +98,23 @@ export class CustomPivotTableDemoComponent implements OnInit {
     }
 
     openCellFormattingDialog(): void {
-        if (this.useDefaultToolbar) {
-            this.pivotTable.flexmonster.toolbar.formatCellsHandler()
-        } else {
-            console.log("Cannot open cell-formatting without toolbar")
-            alert("Diese Funktionalität funktioniert nur über die \"offizielle\" Toolbar")
-        }
+        console.log("Cannot open cell-formatting, conditional formatting or display-options without toolbar")
+        alert("Cell-Formatting, Conditional-Formatting und Display-Options funktionieren nur über die \"offizielle\" Toolbar")
+        // this.pivotTable.flexmonster.toolbar.formatCellsHandler()
         // this.pivotTable.flexmonster.toolbar.conditionalFormattingHandler()
         // this.pivotTable.flexmonster.toolbar.optionsHandler()
+    }
+
+    customizeToolbar(toolbar: Flexmonster.Toolbar) {
+        toolbar.showShareReportTab = false;
+        const tabs: Flexmonster.ToolbarTab[] = toolbar.getTabs()
+        const newTabs: Flexmonster.ToolbarTab[] = tabs.map(tab => {
+            if (this.hiddenTabsIds.includes(tab.id)) {
+                tab.visible = false
+            }
+            return tab
+        })
+        toolbar.getTabs = () => newTabs // override the "getTabs()" to return the changed ones...
     }
 
     private initializeTable(): void {
