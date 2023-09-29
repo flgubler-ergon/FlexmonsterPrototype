@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {getDefaultReportConfig} from './DefaultReport';
 import {RowCount} from '../../model/RowCount';
 import {cloneDeep, isEqual, values} from 'lodash';
@@ -10,6 +10,8 @@ import {ChartType} from '../../model/ChartType';
 import {ExportType} from '../../model/ExportType';
 import {ToolbarTabId} from '../../model/ToolbarTabId';
 import {Language} from '../../model/Language';
+import {ConfigService} from '../../services/config.service';
+import {AppConfig} from '../../model/AppConfig';
 
 @Component({
     selector: 'app-custom-pivot-table-demo',
@@ -19,6 +21,7 @@ import {Language} from '../../model/Language';
 export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
     @ViewChild('pivotTable') pivotTable!: FlexmonsterPivot;
 
+    config?: AppConfig
     reportConfig!: Flexmonster.Report
     selectedRowCount: RowCount = 1500
     selectedStrategy: DataLoadingStrategy = DataLoadingStrategy.LOAD_IN_FLEXMONSTER
@@ -45,11 +48,13 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
     private isShowingChart: Boolean = false
 
     constructor(
-        private readonly tableDataService: TableDataService
+        private readonly tableDataService: TableDataService,
+        private readonly configService: ConfigService,
     ) { }
 
     ngOnInit(): void {
         this.initializeTable()
+        this.loadConfig()
     }
 
     ngAfterViewInit(): void {
@@ -136,6 +141,10 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
         const jsonUrl = this.tableDataService.createRemoteJsonUrl(this.selectedRowCount)
         const localization = this.createLocalizationFilePath(this.selectedLanguage)
         this.reportConfig = getDefaultReportConfig(jsonUrl, localization)
+    }
+
+    private async loadConfig(): Promise<void> {
+        this.config = await this.configService.loadConfig()
     }
 
     private initializeReportConfigListener() {
