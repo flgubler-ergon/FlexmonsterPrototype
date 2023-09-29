@@ -1,10 +1,13 @@
-export function getDefaultReportConfig(remoteJsonUrl: string): Flexmonster.Report {
+import {Language} from '../../model/Language';
+
+export function getDefaultReportConfig(remoteJsonUrl: string, localization: string): Flexmonster.Report {
     console.log("Creating default report for", remoteJsonUrl)
     return {
         dataSource: {
             type: "json",
             filename: remoteJsonUrl,
         },
+        localization: localization,
         slice: {
             rows: [
                 { uniqueName: "country"},

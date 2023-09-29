@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {getDefaultReportConfig} from './DefaultReport';
 import {RowCount} from '../../model/RowCount';
-import {cloneDeep, values} from 'lodash';
+import {cloneDeep, isEqual, values} from 'lodash';
 import {TableDataService} from '../../services/table-data.service';
 import {FlexmonsterPivot} from 'ngx-flexmonster';
 import {DataSource} from 'flexmonster';
@@ -9,13 +9,14 @@ import {DataLoadingStrategy} from '../../model/DataLoadingStrategy';
 import {ChartType} from '../../model/ChartType';
 import {ExportType} from '../../model/ExportType';
 import {ToolbarTabId} from '../../model/ToolbarTabId';
+import {Language} from '../../model/Language';
 
 @Component({
     selector: 'app-custom-pivot-table-demo',
     templateUrl: './custom-pivot-table-demo.component.html',
     styleUrls: ['./custom-pivot-table-demo.component.scss']
 })
-export class CustomPivotTableDemoComponent implements OnInit {
+export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
     @ViewChild('pivotTable') pivotTable!: FlexmonsterPivot;
 
     reportConfig!: Flexmonster.Report
@@ -24,9 +25,11 @@ export class CustomPivotTableDemoComponent implements OnInit {
     previousStrategy: DataLoadingStrategy = this.selectedStrategy
     selectedChartType: ChartType = 'column'
     selectedExportType: ExportType = 'excel'
+    selectedLanguage: Language = Language.ENGLISH
 
     useDefaultToolbar: Boolean = false
 
+    readonly availableLanguages: Language[] = values(Language)
     readonly possibleRowCounts: RowCount[] = [150, 1500, 15000, 150000]
     readonly dataLoadingStrategies: DataLoadingStrategy[] = values(DataLoadingStrategy)
     readonly possibleChartTypes: ChartType[] = ['column', 'bar_h', 'line', 'pie', 'scatter', 'column_line', 'stacked_column']
@@ -49,6 +52,10 @@ export class CustomPivotTableDemoComponent implements OnInit {
         this.initializeTable()
     }
 
+    ngAfterViewInit(): void {
+        this.initializeReportConfigListener()
+    }
+
     rowCountChanged(): void {
         console.log("Selected new row count", this.selectedRowCount)
         this.updateDataSource(this.selectedRowCount, this.selectedStrategy, this.previousStrategy)
@@ -58,6 +65,14 @@ export class CustomPivotTableDemoComponent implements OnInit {
         console.log("Selected new data loading strategy", this.selectedStrategy)
         this.updateDataSource(this.selectedRowCount, this.selectedStrategy, this.previousStrategy)
         this.previousStrategy = this.selectedStrategy
+    }
+
+    languageChanged(): void {
+        console.log("Selected new language", this.selectedLanguage)
+        const newConfig = cloneDeep(this.reportConfig)
+        newConfig.localization = this.createLocalizationFilePath(this.selectedLanguage)
+        this.reportConfig = newConfig
+        this.pivotTable.flexmonster.setReport(newConfig)
     }
 
     chartTypeChanged(): void {
@@ -119,7 +134,18 @@ export class CustomPivotTableDemoComponent implements OnInit {
 
     private initializeTable(): void {
         const jsonUrl = this.tableDataService.createRemoteJsonUrl(this.selectedRowCount)
-        this.reportConfig = getDefaultReportConfig(jsonUrl)
+        const localization = this.createLocalizationFilePath(this.selectedLanguage)
+        this.reportConfig = getDefaultReportConfig(jsonUrl, localization)
+    }
+
+    private initializeReportConfigListener() {
+        this.pivotTable.flexmonster.on('reportchange',  () => {
+            console.log("Report has changed")
+            const report = this.pivotTable.flexmonster.getReport()
+            if (!isEqual(report, this.reportConfig) && typeof report !== 'string') {
+                this.reportConfig = report
+            }
+        });
     }
 
     private async updateDataSource(
@@ -164,5 +190,9 @@ export class CustomPivotTableDemoComponent implements OnInit {
     private async createNewDirectJsonDataSource(rowCount: RowCount): Promise<DataSource> {
         const data: object[] = await this.tableDataService.loadRemoteJsonData(rowCount)
         return { type: 'json', data: data } satisfies DataSource
+    }
+
+    private createLocalizationFilePath(language: Language): string {
+        return `/assets/localization/${language.valueOf()}.json`
     }
 }
