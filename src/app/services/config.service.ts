@@ -12,8 +12,7 @@ export class ConfigService {
   constructor(private readonly http: HttpClient) { }
 
   async loadConfig(): Promise<AppConfig> {
-    const host = location.origin
-    const remoteUrl = `${host}/assets/config.json`
+    const remoteUrl = `/assets/config.json`
     const response$ = this.http.get<AppConfig>(remoteUrl)
     return firstValueFrom(response$)
   }

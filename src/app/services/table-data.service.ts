@@ -12,8 +12,7 @@ export class TableDataService {
   ) {}
 
   createRemoteJsonUrl(rowCount: RowCount): string {
-    const host = location.origin
-    return `${host}/assets/geo_dataset_reduced_${rowCount}.json`
+    return `/assets/geo_dataset_reduced_${rowCount}.json`
   }
 
   async loadRemoteJsonData(rowCount: RowCount): Promise<object[]> {
