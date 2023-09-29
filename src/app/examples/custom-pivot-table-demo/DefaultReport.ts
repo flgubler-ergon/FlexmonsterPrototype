@@ -1,16 +1,13 @@
-import {Language} from '../../model/Language';
-
 export function getDefaultReportConfig(remoteJsonUrl: string, localization: string): Flexmonster.Report {
-    console.log("Creating default report for", remoteJsonUrl)
+    console.log('Creating default report for', remoteJsonUrl)
     return {
         dataSource: {
-            type: "json",
+            type: 'json',
             filename: remoteJsonUrl,
         },
-        localization: localization,
         slice: {
             rows: [
-                { uniqueName: "country"},
+                { uniqueName: "country" },
                 { uniqueName: "timezone" },
                 { uniqueName: "name" }
             ],
@@ -18,28 +15,30 @@ export function getDefaultReportConfig(remoteJsonUrl: string, localization: stri
                 { uniqueName: "[Measures]" }
             ],
             measures: [
-                {
-                    uniqueName: "geonameid",
-                    aggregation: "count"
-                },
-                {
-                    uniqueName: "population",
-                    aggregation: "average"
-                }
-            ],
-            expands: {
-                rows: [
-                    { tuple: ["country.[andorra]"] },
-                    { tuple: ["country.[andorra]", "timezone.[europe/andorra]"] }
-                ]
-            }
+                { uniqueName: "geonameid", aggregation: "count", format: "-18slh78ccxfc00" },
+                { uniqueName: "population", aggregation: "average" }
+            ]
         },
         options: {
-            chart: {
-                type: "column_line"
-            }
+            chart: { type: "bar_h" }
         },
-        version: "2.9.26",
-        creationDate: "2022-06-07T12:54:06.559Z"
+        conditions: [
+            {
+                formula: "#value < 5000",
+                measure: "geonameid",
+                aggregation: "count",
+                format: {
+                    backgroundColor: "#3F51B5",
+                    color: "#8BC34A",
+                    fontFamily: "Arial",
+                    fontSize: "12px"
+                }
+            }
+        ],
+        formats: [
+            { name: "-18slh78ccxfc00", textAlign: "center" }
+        ],
+        version: "2.9.60",
+        creationDate: "2023-09-29T09:21:28.904Z"
     }
 }
