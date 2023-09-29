@@ -3,8 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {CustomPivotTableDemoComponent} from './examples/custom-pivot-table-demo/custom-pivot-table-demo.component';
 
 const routes: Routes = [
-  { path: 'demo42', component: CustomPivotTableDemoComponent },
-  { path: '**', redirectTo: 'demo42' }
+  { path: '**', component: CustomPivotTableDemoComponent },
 ];
 
 @NgModule({
