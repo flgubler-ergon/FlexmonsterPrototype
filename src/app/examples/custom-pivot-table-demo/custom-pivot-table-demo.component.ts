@@ -132,6 +132,13 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
             if (this.hiddenTabsIds.includes(tab.id)) {
                 tab.visible = false
             }
+            if (tab.title) {
+                tab.title = tab.title + "\n-Custom"
+            }
+            if (tab.id === ToolbarTabId.SAVE_REPORT) { // experiment: custom-icon
+                // yes, this is ugly! But it seems to be the only way :-(...
+                tab.icon = "<img src=\"assets/icons/save.svg\" width=\"40\" height=\"40\">"
+            }
             return tab
         })
         toolbar.getTabs = () => newTabs // override the "getTabs()" to return the changed ones...
