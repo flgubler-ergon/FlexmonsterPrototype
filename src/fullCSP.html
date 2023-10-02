@@ -1,3 +1,8 @@
+<!-- ================================================================== -->
+<!-- This html file is to show the behavior with the full, original CSP -->
+<!-- ================================================================== -->
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,12 +13,6 @@
 
   <!--  CSP Original -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' ws:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; object-src 'none'; trusted-types angular dompurify default webpack-dev-server#overlay; require-trusted-types-for 'script'">
-
-  <!--  CSP Partially reduced: removed require-trusted-types-for -->
-<!--  <meta http-equiv="Content-Security-Policy" content="default-src 'self' ws:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; object-src 'none'; trusted-types angular dompurify default;">-->
-
-  <!--  CSP Partially reduced: removed `script-src 'self'` `default-src 'self' ws:` -->
-<!--  <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; trusted-types angular dompurify default webpack-dev-server#overlay; require-trusted-types-for 'script'">-->
 
   <!--  Other headers -->
   <meta http-equiv="Permission-Policy" content="accelerometer=(), autoplay=(), camera=(), clipboard-read=(), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), hid=(), idle-detection=(), local-fonts=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), usb=(), xr-spatial-tracking=()">
