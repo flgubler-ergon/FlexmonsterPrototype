@@ -30,7 +30,7 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
     selectedExportType: ExportType = 'excel'
     selectedLanguage: Language = Language.ENGLISH
 
-    useDefaultToolbar: Boolean = false
+    useDefaultToolbar: Boolean = true
 
     readonly availableLanguages: Language[] = values(Language)
     readonly possibleRowCounts: RowCount[] = [150, 1500, 15000, 150000]

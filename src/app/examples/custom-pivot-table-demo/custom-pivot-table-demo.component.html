@@ -61,13 +61,10 @@
 </div>
 
 <div class="description-blocks first-description-block">
-    <h3>Was getestet werden soll</h3>
+    <p>Bei der Option mit reduzierter CSP wurden folgende Policies entfernt</p>
     <ul>
-        <li>JSON Als Datenquelle</li>
-        <li>Umgang mit grossen Datenmengen</li>
-        <li>CSP Kompatibilität</li>
-        <li>Localization / Sprachwechsel</li>
-        <li>UX Konfigurierbarkeit</li>
-        <li>Performance</li>
+        <li>script-src 'self'</li>
+        <li>default-src 'self' ws:</li>
+        <li>require-trusted-types-for 'script'</li>
     </ul>
 </div>
