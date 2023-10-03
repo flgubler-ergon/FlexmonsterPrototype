@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {getDefaultReportConfig} from './DefaultReport';
+import {getDefaultReportConfig, getTimelineReportConfig} from './DefaultReport';
 import {RowCount} from '../../model/RowCount';
 import {cloneDeep, isEqual, values} from 'lodash';
 import {TableDataService} from '../../services/table-data.service';
@@ -26,6 +26,7 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
     config?: AppConfig
     reportConfig!: Flexmonster.Report
     selectedDataSourceType: DataSourceType = DataSourceType.DEFAULT_DATA
+    previousDataSourceType: DataSourceType = DataSourceType.DEFAULT_DATA
     selectedRowCount: RowCount = 1500
     selectedStrategy: DataLoadingStrategy = DataLoadingStrategy.LOAD_IN_FLEXMONSTER
     previousStrategy: DataLoadingStrategy = this.selectedStrategy
@@ -68,17 +69,26 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
     }
 
     dataSourceTypeChanged(): void {
-        console.log("Selected new data source type", this.selectedDataSourceType)
-        this.updateDataSource(this.selectedDataSourceType, this.selectedRowCount, this.selectedStrategy, this.previousStrategy)
+        const oldValue = this.previousDataSourceType
+        const newValue = this.selectedDataSourceType
+        this.previousDataSourceType = newValue
+        const dataSourceTypeChanged = oldValue !== newValue
+
+        if (oldValue === newValue) {
+            return
+        }
+
+        console.log("Selected new data source type", newValue)
+        this.updateDataSource(newValue, this.selectedRowCount, this.selectedStrategy, this.previousStrategy, dataSourceTypeChanged)
     }
     rowCountChanged(): void {
         console.log("Selected new row count", this.selectedRowCount)
-        this.updateDataSource(this.selectedDataSourceType, this.selectedRowCount, this.selectedStrategy, this.previousStrategy)
+        this.updateDataSource(this.selectedDataSourceType, this.selectedRowCount, this.selectedStrategy, this.previousStrategy, false)
     }
 
     strategyChanged(): void {
         console.log("Selected new data loading strategy", this.selectedStrategy)
-        this.updateDataSource(this.selectedDataSourceType, this.selectedRowCount, this.selectedStrategy, this.previousStrategy)
+        this.updateDataSource(this.selectedDataSourceType, this.selectedRowCount, this.selectedStrategy, this.previousStrategy, false)
         this.previousStrategy = this.selectedStrategy
     }
 
@@ -169,8 +179,7 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
 
     private initializeTable(): void {
         const jsonUrl = this.tableDataService.createStandardDataRemoteJsonUrl(this.selectedRowCount)
-        const localization = this.createLocalizationFilePath(this.selectedLanguage)
-        this.reportConfig = getDefaultReportConfig(jsonUrl, localization)
+        this.reportConfig = getDefaultReportConfig(jsonUrl)
     }
 
     private async loadConfig(): Promise<void> {
@@ -192,6 +201,7 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
         rowCount: RowCount,
         strategy: DataLoadingStrategy,
         previousStrategy: DataLoadingStrategy,
+        dataSourceTypeChanged: boolean,
     ): Promise<void> {
         let newDataSource: DataSource
 
@@ -207,14 +217,28 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
                 break;
         }
 
-        const newConfig = cloneDeep(this.reportConfig)
+        let newConfig: Flexmonster.Report
+        if (dataSourceTypeChanged) {
+            switch (dataSourceType) {
+                case DataSourceType.DEFAULT_DATA:
+                    newConfig = getDefaultReportConfig("XXX this should never be shown")
+                    break;
+                case DataSourceType.TIMELINE_DATA_SP500:
+                    newConfig = getTimelineReportConfig("XXX this should never be shown")
+                    break;
+
+            }
+        } else {
+            newConfig = cloneDeep(this.reportConfig)
+        }
+
         newConfig.dataSource = newDataSource
         this.reportConfig = newConfig
 
 
         this.pivotTable.flexmonster.updateData(newDataSource)
 
-        if (previousStrategy === DataLoadingStrategy.NONE && strategy !== DataLoadingStrategy.NONE) {
+        if (dataSourceTypeChanged || previousStrategy === DataLoadingStrategy.NONE && strategy !== DataLoadingStrategy.NONE) {
             // the config was lost if the data was reset
             this.pivotTable.flexmonster.setReport(this.reportConfig)
         }
