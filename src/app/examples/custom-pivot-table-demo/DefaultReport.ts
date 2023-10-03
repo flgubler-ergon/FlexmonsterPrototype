@@ -56,7 +56,7 @@ export function getTimelineReportConfig(remoteJsonUrl: string): Flexmonster.Repo
             measures: [
                 {
                     uniqueName: "SP500",
-                    aggregation: "sum"
+                    aggregation: "average"
                 }
             ],
             expands: {
