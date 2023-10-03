@@ -79,7 +79,12 @@ export function getTimelineReportConfig(remoteJsonUrl: string): Flexmonster.Repo
                 }
             }
         ],
-        formats: [],
+        formats: [
+            {
+                name: "", // I think this means "all aggregated values"
+                decimalPlaces: 1
+            }
+        ],
         version: "2.9.60",
         creationDate: "2023-10-03T11:11:19.250Z"
     } satisfies Flexmonster.Report
