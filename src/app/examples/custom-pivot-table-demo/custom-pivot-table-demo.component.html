@@ -2,7 +2,12 @@
 
 <h3>Konfigurator</h3>
 <div class="data-configurator">
-    <select class="config-elem" [(ngModel)]="selectedRowCount" (change)="rowCountChanged()">
+    <select class="config-elem" [(ngModel)]="selectedDataSourceType" (change)="dataSourceTypeChanged()">
+        <option *ngFor="let type of availableDataSourceTypes" [value]="type" [selected]="selectedDataSourceType === type">
+            {{type}}
+        </option>
+    </select>
+    <select *ngIf="selectedDataSourceType === defaultDataSourceType" class="config-elem" [(ngModel)]="selectedRowCount" (change)="rowCountChanged()">
         <option *ngFor="let rowCount of possibleRowCounts" [value]="rowCount" [selected]="selectedRowCount === rowCount">
             {{rowCount}} Zeilen
         </option>
@@ -45,6 +50,7 @@
 
     <button class="toolbox-elem" (click)="printData()">Daten drucken</button>
     <button class="toolbox-elem" (click)="openConfigurator()">Konfigurator öffnen</button>
+    <button class="toolbox-elem" (click)="exportDataAsJson()">Custom JSON Export</button>
 
     <button class="toolbox-elem" (click)="openCellFormattingDialog()">Cell-Formatting öffnen</button>
 </div>
