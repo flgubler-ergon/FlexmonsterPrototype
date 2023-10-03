@@ -14,6 +14,7 @@ import {ConfigService} from '../../services/config.service';
 import {AppConfig} from '../../model/AppConfig';
 import {DataExportService} from '../../services/data-export.service';
 import {DataSourceType} from '../../model/DataSourceType';
+import {TimelineSanitizationService} from '../../services/timeline-sanitization.service';
 
 @Component({
     selector: 'app-custom-pivot-table-demo',
@@ -57,6 +58,7 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
         private readonly tableDataService: TableDataService,
         private readonly configService: ConfigService,
         private readonly exportService: DataExportService,
+        private readonly timelineSanitizationService: TimelineSanitizationService,
     ) { }
 
     ngOnInit(): void {
@@ -76,6 +78,14 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
 
         if (oldValue === newValue) {
             return
+        }
+
+        switch (newValue) {
+            case DataSourceType.DEFAULT_DATA:
+                break;
+            case DataSourceType.TIMELINE_DATA_SP500:
+                this.selectedStrategy = DataLoadingStrategy.LOAD_MANUALLY // the data needs some sanitization...
+                break;
         }
 
         console.log("Selected new data source type", newValue)
@@ -117,6 +127,14 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
         this.pivotTable.flexmonster.showGrid()
         this.isShowingChart = false
         this.isShowingGrid = true
+    }
+
+    expandAll(): void {
+        this.pivotTable.flexmonster.expandAllData(true)
+    }
+
+    collapseAll(): void {
+        this.pivotTable.flexmonster.collapseAllData()
     }
 
     saveReportConfig(): void {
@@ -253,7 +271,12 @@ export class CustomPivotTableDemoComponent implements OnInit, AfterViewInit {
 
     private async createNewDirectJsonDataSource(dataSourceType: DataSourceType, rowCount: RowCount): Promise<DataSource> {
         const jsonUrl = this.createJsonUrl(dataSourceType, rowCount)
-        const data: object[] = await this.tableDataService.loadRemoteJsonData(jsonUrl)
+        let data: object[] = await this.tableDataService.loadRemoteJsonData(jsonUrl)
+
+        if (dataSourceType == DataSourceType.TIMELINE_DATA_SP500) {
+           data = this.timelineSanitizationService.sanitizeTimelineData(data as {[key: string]: string}[])
+        }
+
         return { type: 'json', data: data } satisfies DataSource
     }
 

@@ -12,7 +12,7 @@
             {{rowCount}} Zeilen
         </option>
     </select>
-    <select class="config-elem" [(ngModel)]="selectedStrategy" (change)="strategyChanged()">
+    <select *ngIf="selectedDataSourceType === defaultDataSourceType" class="config-elem" [(ngModel)]="selectedStrategy" (change)="strategyChanged()">
         <option *ngFor="let strategy of dataLoadingStrategies" [value]="strategy" [selected]="selectedStrategy === strategy">
             {{strategy}}
         </option>
@@ -29,6 +29,11 @@
     <input type="checkbox" id="hiddenToolbarCheckbox" [(ngModel)]="useDefaultToolbar">
     <label for="hiddenToolbarCheckbox">Standard-Toolbar nutzen</label>
 </div>
+<div class="toolbox-bar">
+    <button class="toolbox-elem" (click)="expandAll()">Expand All</button>
+    <button class="toolbox-elem" (click)="collapseAll()">Collapse All</button>
+</div>
+
 <div class="toolbox-bar" *ngIf="!useDefaultToolbar">
     <button class="toolbox-elem" (click)="showTable()">Tabelle zeigen</button>
 
