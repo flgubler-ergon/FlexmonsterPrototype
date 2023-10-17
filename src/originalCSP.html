@@ -1,10 +1,3 @@
-<!-- ================================================================== -->
-<!-- This html file is to show the behavior with a reduced CSP -->
-<!-- Beware: this file is (different than index.html) not updated on build! -->
-<!-- for loading this to github-pages, the names of the JS- and CSS-Files at the bottom need to be updated manually -->
-<!-- ================================================================== -->
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,8 +6,8 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!--  CSP Partially reduced: removed `script-src 'self'` and `default-src 'self' ws:` and  require-trusted-types-for 'script' -->
-  <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; trusted-types angular dompurify xml fmHtmlPolicy default webpack-dev-server#overlay 'allow-duplicates';">
+  <!--  CSP Original -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' ws:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; object-src 'none'; trusted-types angular dompurify default webpack-dev-server#overlay; require-trusted-types-for 'script'">
 
   <!--  Other headers -->
   <meta http-equiv="Permission-Policy" content="accelerometer=(), autoplay=(), camera=(), clipboard-read=(), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), hid=(), idle-detection=(), local-fonts=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), usb=(), xr-spatial-tracking=()">

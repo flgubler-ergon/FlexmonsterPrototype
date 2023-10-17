@@ -72,6 +72,12 @@
 </div>
 
 <div class="description-blocks first-description-block">
+    <p>Bei der Option mit angepasster CSP wurden keine Policies entfernt, aber folgende angepasst: <br/> require-trusted-types-for 'script'</p>
+    <ul>
+        <li>Policy "fmHtmlPolicy" als "trusted" hinzugefügt</li>
+        <li>Policy "xml" als "trusted" hinzugefügt (der allgemeine Name gefällt mir nicht; könnte man auch noch nachfragen)</li>
+        <li>Das Attribut 'allow-duplicates' hinzugefügt, weil sie versuchen, fmHtmlPolicy doppelt hinzuzufügen (dem Support schon gemeldet)</li>
+    </ul>
     <p>Bei der Option mit reduzierter CSP wurden folgende Policies entfernt</p>
     <ul>
         <li>script-src 'self'</li>
